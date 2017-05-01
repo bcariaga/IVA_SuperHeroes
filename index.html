@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>IVA - Instituto Vocacional de Arte " Manuel Jose de Labardén"</title>
+	<link rel=stylesheet href="./css/bootstrap.min.css">
+	<link rel=stylesheet href="./css/animate.css">
+	<link rel=stylesheet href="./css/index.css">
+</head>
+<body>
+	<div id="body" class="container-fluid">
+		<div class="jumbotron">
+			<h1>Super Heroes!</h1>
+			<div class="row" id="superhero-sprites">
+				<div class="superhero" id="superhero-1">
+					<img src="./sprites/ironman_paso1.png" alt="ironman" id="ironman">
+				</div>
+				<div class="superhero" id="superhero-2">
+					<img src="./sprites/thor_paso1.png" alt="thor" id="thor" data-paso="1">
+				</div>
+				<div class="superhero" id="superhero-3">
+					<img src="./sprites/captainamerica_paso1.png" alt="captainamerica" id="captainamerica">
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="well well-lg">
+				<h1>Resuelve el laberinto!</h1>
+			</div>
+			<div id="plano">
+				<div id="mapa" >
+					<img src="./sprites/gold.png" alt="win!" id="premio">
+					<img src="./sprites/deadpool_paso1.png" alt="deadpool_juego" id="deadpool" class="sprite">
+					<div class="obstaculo" id="obstaculo_1"></div>
+					<div class="obstaculo" id="obstaculo_2"></div>
+					<div class="obstaculo" id="obstaculo_3"></div>
+					<div class="obstaculo" id="obstaculo_4"></div>
+					<div class="obstaculo" id="obstaculo_5"></div>
+					<div class="obstaculo" id="obstaculo_6"></div>
+					<div class="obstaculo" id="obstaculo_7"></div>
+					<div class="obstaculo" id="obstaculo_8"></div>
+					<div class="obstaculo" id="obstaculo_9"></div>
+					<div class="obstaculo" id="border_top"></div>
+					<div class="obstaculo" id="border_bottom"></div>
+					<div class="obstaculo" id="border_left"></div>
+					<div class="obstaculo" id="border_rigth"></div>
+				</div>	
+			</div>
+			
+		</div>
+		<div class="modal fade" id="win">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header bg-success">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Ganaste!!</h4>
+					</div>
+					<div class="modal-body">
+						Felicidades completaste el laberinto!
+					</div>
+					<div class="modal-footer">
+    					<button type="button" class="btn btn-default" data-dismiss="modal">Listo!</button>
+      				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="./js/jquery-3.2.1.min.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			/*inicio animaciones de juego*/
+			var position = 
+				{
+					up : 1,
+					down : 1,
+					left : 1,
+					down : 1
+				}
+			$('#deadpool').data("superhero_frame", position)
+
+			$('#win').on('hidden.bs.modal', function () {
+			 location.reload();
+			})
+
+			/**
+			* Returns a random number between min (inclusive) and max (exclusive)
+			*/
+			function getRandomArbitrary(min, max) {
+			    return Math.random() * (max - min) + min;
+			}
+
+			setTimeout(function() {
+				var intervalMax = 250;
+				var intervalMin = 255;
+
+				moveToLeft('#superhero-1', 250);
+				moveToLeft('#superhero-2', 250);
+				moveToLeft('#superhero-3', 250);
+			}, 1000);
+
+			function moveToLeft(elemento, cadaCuanto) {
+				var intervalMax = 1;
+				var intervalMin = 20;
+
+				var element = $(elemento);
+				var desplazamiento = getRandomArbitrary(intervalMin,intervalMax)
+
+				var superhero = element
+									.find('img')
+										.attr('alt');
+				
+				var initialLeft = parseInt(element.css('left'));
+				var left = parseInt(element.css('left'));
+
+				if (left < (window.innerWidth - 400) ) {	
+					left = left + desplazamiento;
+					element.css({
+						left: left
+					});	
+					sprite(superhero);
+				}else{
+					element.css({
+						left: "auto"
+					});	
+				}
+
+				
+				setTimeout(function() {
+					moveToLeft(elemento, cadaCuanto);
+				}, cadaCuanto);
+			}
+
+
+			function sprite(superhero) {
+				
+				var selector = $('#' + superhero);
+				var paso = selector.data("superhero_paso");
+				var maximosPasos = 4;
+				
+				/*me encargo de inicar en paso 1 siempre*/
+				var pasoActual = paso !== undefined ? paso : 1 ;
+				/*nunca pasar el maximo de pasos (fps), reseteo la animacion*/
+				var pasoSiguiente = pasoActual + 1 <= maximosPasos ? pasoActual + 1 : 1; 
+
+				var srcImagen = "./sprites/"+superhero+"_paso" + pasoSiguiente + '.png';
+				
+				selector.attr('src',srcImagen);
+
+				selector.data("superhero_paso", pasoSiguiente); 
+			}
+
+
+			$(document).keydown(function(event) {
+
+				/*39 ->*/
+				/*38 flecha arriba*/
+				/*37 <-*/
+				/*40  flecha baja*/
+				if (event.keyCode === 39) { //rigth
+					directionalMove('deadpool', 'right');
+				}else if (event.keyCode === 38) { //up
+					directionalMove('deadpool', 'up');
+				}else if (event.keyCode === 37) { //left
+					directionalMove('deadpool', 'left');
+				}else if (event.keyCode === 40) { //rigth
+					directionalMove('deadpool', 'down');
+				}
+				//console.log(event.keyCode);
+			});
+
+			function directionalMove(superhero, direction) {
+				var element = $( '#' + superhero );
+				
+				var position = element.data("superhero_frame");
+
+				var next_frameUp = position.up < 4 ? position.up + 1 : 1 ;
+				var next_frameRigth = position.rigth < 4 ? position.up + 1 : 1 ;
+				var next_frameLeft = position.left < 4 ? position.up + 1 : 1 ;
+				var next_frameDown = position.down < 4 ? position.up + 1 : 1 ;
+
+				var positionRigth = parseInt( element.css('right') );
+				var positionLeft = parseInt( element.css('left') );
+				var positionUp = parseInt( element.css('top') );
+				var positionDown = parseInt( element.css('bottom') );
+
+				var pxPorFrame = 5;
+
+				switch(direction) {
+				    case "right":
+				        element.css('left', positionLeft + pxPorFrame);
+				        if (isCollicion(element, $('.obstaculo') ) ) { element.css('left', positionLeft - pxPorFrame);};
+				        element.attr( 'src', armarSrc(superhero, "right", next_frameRigth) );
+				        break;
+				    case "left":
+				        element.css('left', positionLeft - pxPorFrame);
+				        if(isCollicion(element, $('.obstaculo') ) ) { element.css('left', positionLeft + pxPorFrame);};
+				        //element.css('right', positionRigth + pxPorFrame);
+				        element.attr( 'src', armarSrc(superhero, "left", next_frameLeft) );
+				        break;
+			        case "up":
+				        element.css('top', positionUp - pxPorFrame);
+				        if( isCollicion(element, $('.obstaculo') ) ) { element.css('top', positionUp + pxPorFrame);};
+				        //element.css('bottom', positionDown + pxPorFrame);
+				        element.attr( 'src', armarSrc(superhero, "up", next_frameUp) );
+				        break;
+			       case "down":
+				        element.css('top', positionUp + pxPorFrame);
+				        if( isCollicion(element, $('.obstaculo') ) ) { element.css('top', positionUp - pxPorFrame);};
+				        element.attr( 'src', armarSrc(superhero, "down", next_frameDown) );
+				        break;
+				    default:
+				        break;
+				}
+
+				if ( collision(element, $('#premio') ) ) {
+					$('#win').modal('show');
+				}
+
+				console.log( isCollicion(element, $('.obstaculo')) );
+
+				var new_position = 
+				{
+					up : next_frameUp,
+					rigth : next_frameRigth,
+					left : next_frameLeft,
+					down : next_frameDown
+				}
+				element.data("superhero_frame", new_position);
+			}
+
+			function armarSrc(superhero, paso, frame) {
+				return "./sprites/" + superhero +'_'+ paso + frame + '.png';
+			}
+
+		    function collision($div1, $div2) {
+				var x1 = $div1.offset().left;
+				var y1 = $div1.offset().top;
+				var h1 = $div1.outerHeight(true);
+				var w1 = $div1.outerWidth(true);
+				var b1 = y1 + h1;
+				var r1 = x1 + w1;
+				var x2 = $div2.offset().left;
+				var y2 = $div2.offset().top;
+				var h2 = $div2.outerHeight(true);
+				var w2 = $div2.outerWidth(true);
+				var b2 = y2 + h2;
+				var r2 = x2 + w2;
+		        
+		      	if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) return false;
+		      	
+		      	return true;
+		    }
+
+		    function isCollicion(element_1, element_2) {
+		    	var hayImpacto = false;
+		    	$.each(element_2, function(index, val) {
+		    		 if ( collision(element_1,$(val)) ) { hayImpacto = true; return false; }
+		    	});
+		    	return hayImpacto;
+		    }
+		});
+
+
+	</script>
+</body>
+</html>
