@@ -2,7 +2,7 @@ html, body {
 	height: 100%;
 	width: 100%;
 	margin: 0; 
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 
 body{
@@ -40,7 +40,7 @@ body{
 	top: 7px;
 	position: relative;
 	padding: 0px;
-    margin: 0px;
+    	margin: 0px;
  }
 
 .obstaculo{
@@ -113,38 +113,38 @@ body{
 	background-color: transparent;
 	background: none;
 	width: 106%;
-    height: 1%;
-    left: -3%;
-    top: -243%;
+    	height: 1%;
+    	left: -3%;
+    	top: -243%;
 }
 #border_bottom{
 	background-color: transparent;
 	background: none;
 	width: 106%;
-    height: 1%;
-    left: -3%;
-    top: -143%;
+    	height: 1%;
+    	left: -3%;
+    	top: -143%;
 }
 #border_rigth{
 	background-color: transparent;
 	background: none;
 	width: 1%;
-    height: 100%;
-    left: 102%;
-    top: -344%;
+    	height: 100%;
+    	left: 102%;
+    	top: -344%;
 }
 #border_left{
 	background-color: transparent;
 	background: none;
 	width: 3%;
-    height: 100%;
-    left: -3%;
-    top: -244%;
+    	height: 100%;
+    	left: -3%;
+    	top: -244%;
 }
 #mapa{
 	border: 1px solid black;
 	
-	height: 50vh;
+	height: 500px;
 	background: rgb(184,225,252); /* Old browsers */
 	background: -moz-linear-gradient(top, rgba(184,225,252,1) 0%, rgba(162,218,245,1) 3%, rgba(162,218,245,1) 3%, rgba(144,186,228,1) 12%, rgba(162,218,245,1) 29%, rgba(144,191,240,1) 37%, rgba(144,191,240,1) 37%, rgba(169,210,243,1) 46%, rgba(169,210,243,1) 46%, rgba(144,191,240,1) 68%, rgba(144,188,234,1) 75%, rgba(144,188,234,1) 75%, rgba(144,191,240,1) 90%, rgba(144,191,240,1) 90%, rgba(189,243,253,1) 100%); /* FF3.6-15 */
 	background: -webkit-linear-gradient(top, rgba(184,225,252,1) 0%,rgba(162,218,245,1) 3%,rgba(162,218,245,1) 3%,rgba(144,186,228,1) 12%,rgba(162,218,245,1) 29%,rgba(144,191,240,1) 37%,rgba(144,191,240,1) 37%,rgba(169,210,243,1) 46%,rgba(169,210,243,1) 46%,rgba(144,191,240,1) 68%,rgba(144,188,234,1) 75%,rgba(144,188,234,1) 75%,rgba(144,191,240,1) 90%,rgba(144,191,240,1) 90%,rgba(189,243,253,1) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -153,8 +153,8 @@ body{
 }
 #premio{
 	position: relative;
-    left: 90%;
-    top: 395px;
+    	left: 90%;
+    	top: 395px;
 
 }
 /*#superhero-1{
